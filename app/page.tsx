@@ -58,7 +58,14 @@ const postsData = {
   ]
 };
 
-const Post = ({ title, imageSrc, text, onImageClick }) => (
+interface PostProps {
+  title: string;
+  imageSrc: string;
+  text: string;
+  onImageClick: (src: string) => void;
+}
+
+const Post: React.FC<PostProps> = ({ title, imageSrc, text, onImageClick }) => (
   <div className="post-box">
     <div className="post-title">{title}</div>
     <img
@@ -143,7 +150,7 @@ export default function Home() {
 
         {/* What's Happening Section */}
         <div className="trending-section">
-          <h3>What's happening</h3>
+          <h3>What&apos;s happening</h3>
           <ul>
             <li>
               <span>Entertainment • Trending</span>
