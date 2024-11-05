@@ -139,7 +139,11 @@ export default function Home() {
       </div>
       <div className="right-sidebar">
         {/* Placeholder for Search Bar */}
-        <div className="search-placeholder">🔍 Search Twitter</div>
+        <input
+          type="text"
+          className="search-placeholder"
+          placeholder="🔍 Search Twitter"
+        />
 
         {/* Get Verified Section */}
         <div className="verified-section">

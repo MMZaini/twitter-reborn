@@ -72,13 +72,14 @@
 .tab {
     padding: 10px 20px;
     margin: 0 10px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 18px;
+    transition: all 0.3s ease; /* Add transition for smooth animation */
 }
 
 .tab.selected {
     border: 3px solid #176683; /* Blue underline for selected tab */
-    border-radius: 10px;
     font-weight: bold;
 }
 
@@ -185,6 +186,10 @@
     text-align: left;
     margin-bottom: 16px;
     padding: 10px;
+    border: none;
+    border-radius: 20px;
+    color: #aec8ec;
+    font-size: 14px;
 }
 
 /* Verified Section */
