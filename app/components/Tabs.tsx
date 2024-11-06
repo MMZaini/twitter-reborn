@@ -1,3 +1,4 @@
+// src/components/Tabs.tsx
 import React from 'react';
 import '../page.css';
 

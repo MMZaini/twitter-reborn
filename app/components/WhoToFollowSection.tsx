@@ -1,3 +1,4 @@
+// src/components/WhoToFollowSection.tsx
 import React from 'react';
 import '../page.css';
 

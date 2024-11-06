@@ -1,3 +1,4 @@
+// src/components/VerifiedSection.tsx
 import React from 'react';
 import '../page.css';
 
