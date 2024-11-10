@@ -194,29 +194,39 @@
     width: 100%;
 }
 
-.delete-button {
+.post-actions {
+    display: flex;
+    gap: 8px;
     position: absolute;
-    top: 10px; /* Changed from bottom to top */
+    top: 10px;
     right: 10px;
+    z-index: 1;
+}
+
+.edit-button,
+.delete-button {
     background-color: transparent;
     color: #71767b;
     border: none;
     border-radius: 50%;
-    width: 32px;
-    height: 32px;
+    width: 36px; /* Increased from 32px */
+    height: 36px; /* Increased from 32px */
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px; /* Increased from 16px */
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 1; /* Ensure button stays above content */
+}
+
+.edit-button:hover {
+    background-color: rgba(56, 176, 248, 0.1);
+    color: rgb(56, 176, 248);
 }
 
 .delete-button:hover {
     background-color: rgba(244, 33, 46, 0.1);
     color: #f4212e;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Modal */

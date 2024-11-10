@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /**
  * Twitter Clone Main Application
  * Provides social media functionality with posts, tabs, and interactive features
@@ -22,9 +23,11 @@ interface PostProps {
   title: string;
   imageSrc?: string;
   text: string;
+  category: string;
   onImageClick: (src: string) => void;
   onDelete: (id: string) => void;
   onDeleteClick: (id: string) => void;
+  onEditClick: (post: PostData) => void; // Add this
 }
 
 /**
@@ -32,17 +35,35 @@ interface PostProps {
  * Renders individual post with title, optional image, and text content
  * Handles image preview and deletion functionality
  */
-const Post: React.FC<PostProps> = ({ id, title, imageSrc, text, onImageClick, onDelete, onDeleteClick }) => (
+const Post: React.FC<PostProps> = ({
+  id,
+  title,
+  imageSrc,
+  text,
+  category,
+  onImageClick,
+  onDeleteClick,
+  onEditClick
+}) => (
   <div className="post-box">
     <div className="post-header">
       <div className="post-title">{title}</div>
-      <button
-        className="delete-button"
-        onClick={() => onDeleteClick(id)}
-        aria-label="Delete post"
-      >
-        ✕
-      </button>
+      <div className="post-actions">
+        <button
+          className="edit-button"
+          onClick={() => onEditClick({ id, title, text, imageSrc, category })}
+          aria-label="Edit post"
+        >
+          ✎
+        </button>
+        <button
+          className="delete-button"
+          onClick={() => onDeleteClick(id)}
+          aria-label="Delete post"
+        >
+          ✕
+        </button>
+      </div>
     </div>
     {imageSrc ? (
       <img
@@ -61,6 +82,7 @@ export default function Home() {
   const [selectedTab, setSelectedTab] = useState('home');
   const [posts, setPosts] = useState<PostData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [editingPost, setEditingPost] = useState<PostData | null>(null);
 
   // Modal states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -116,28 +138,48 @@ export default function Home() {
   };
 
   /**
-   * Handles post creation
-   * Inserts new post into Supabase and updates local state if successful
+   * Handles post creation and editing
    */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const { title, text, imageSrc, category } = newPost;
 
     try {
-      const { data, error } = await supabase
-        .from('posts')
-        .insert([{ title, text, imageSrc, category }])
-        .select();
+      if (editingPost) {
+        // Update existing post
+        const { data, error } = await supabase
+          .from('posts')
+          .update({
+            title,
+            text,
+            imageSrc: imageSrc || null,
+            category
+          })
+          .eq('id', editingPost.id)
+          .select();
 
-      if (error) {
-        console.error('Error adding post:', error.message, error.details);
-        alert(`Failed to create post: ${error.message}`);
-      } else {
-        if (data) {
-          // Only update UI if post belongs to current tab
+        if (error) {
+          console.error('Error updating post:', error);
+          alert(`Failed to update post: ${error.message}`);
+          return;
+        }
+
+        if (data && data[0]) {
           if (category === selectedTab) {
-            setPosts((currentPosts) => [...currentPosts, ...data]);
+            // Update the post in the current tab
+            setPosts(currentPosts =>
+              currentPosts.map(post =>
+                post.id === editingPost.id ? data[0] : post
+              )
+            );
+          } else {
+            // Remove post from current tab if category changed
+            setPosts(currentPosts =>
+              currentPosts.filter(post => post.id !== editingPost.id)
+            );
           }
+
+          // Reset states
           setIsCreatePostModalOpen(false);
           setNewPost({
             title: '',
@@ -145,10 +187,48 @@ export default function Home() {
             imageSrc: '',
             category: 'home',
           });
+          setEditingPost(null);
+        }
+      } else {
+        // Create new post logic remains the same...
+        const { data, error } = await supabase
+          .from('posts')
+          .insert([{ title, text, imageSrc, category }])
+          .select();
+
+        if (error) {
+          console.error('Error adding post:', error.message, error.details);
+          alert(`Failed to create post: ${error.message}`);
+        } else {
+          if (data) {
+            // Only update UI if post belongs to current tab
+            if (category === selectedTab) {
+              setPosts((currentPosts) => [...currentPosts, ...data]);
+            }
+            setIsCreatePostModalOpen(false);
+            setNewPost({
+              title: '',
+              text: '',
+              imageSrc: '',
+              category: 'home',
+            });
+          }
         }
       }
+
+      // Reset state
+      setIsCreatePostModalOpen(false);
+      setNewPost({
+        title: '',
+        text: '',
+        imageSrc: '',
+        category: 'home',
+      });
+      setEditingPost(null);
+
     } catch (err) {
-      console.error('Exception during post creation:', err);
+      console.error('Exception during post operation:', err);
+      alert('An error occurred while saving the post');
     }
   };
 
@@ -198,6 +278,17 @@ export default function Home() {
       await deletePost(deleteConfirmation.postId);
       setDeleteConfirmation({ isOpen: false, postId: null });
     }
+  };
+
+  const handleEditClick = (post: PostData) => {
+    setEditingPost(post);
+    setNewPost({
+      title: post.title,
+      text: post.text,
+      imageSrc: post.imageSrc || '',
+      category: post.category,
+    });
+    setIsCreatePostModalOpen(true);
   };
 
   // Client-side rendering setup
@@ -271,6 +362,7 @@ export default function Home() {
               onImageClick={handleImageClick}
               onDelete={deletePost}
               onDeleteClick={handleDeleteClick}
+              onEditClick={handleEditClick}
             />
           ))
         )}
