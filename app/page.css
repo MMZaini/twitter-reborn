@@ -1,16 +1,17 @@
 .container {
     display: flex;
+    padding-top: 10px;
 }
 
-/* Sidebar */
+
 .sidebar {
     width: 230px;
-    height: 550px;
-    margin-top: 55px;
-    margin-left: 450px; /* Adjust this value to control the space from the left */
+    height: 510px;
+    margin-top: 65px;
+    margin-left: 430px;
     background-color: #1b2634;
-    padding: 20px;
-    border-radius: 35px; /* Rounded corners */
+    padding: 20px 15px;
+    border-radius: 35px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -21,15 +22,14 @@
 .sidebar-image {
     width: 75px; /* Adjust the width as needed */
     height: auto;
-    margin-top: -5px;
-    margin-bottom: 20px;
-    margin-left: -100px;
+    margin: 0 auto 20px auto; /* Center horizontally and keep bottom margin */
+    display: block; /* Ensure proper centering */
 }
 
 .sidebar-button {
-    width: 230px;
-    padding: 5px 10px;
-    margin: 5px 0;
+    width: 200px; /* Slightly reduced width */
+    padding: 5px 15px;
+    margin: 5px auto; /* Center horizontally */
     background-color: #1b2634; /* Green background */
     color: #aec8ec; /* White text */
     border: none;
@@ -38,6 +38,8 @@
     text-align: left;
     transition: background-color 0.3s ease;
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    display: flex;
+    align-items: center;
 }
 
 .sidebar-button:hover {
@@ -45,21 +47,29 @@
 }
 
 .sidebar-button-bottom {
-    background-color: rgb(56 176 248); /* Blue background */
-    border-radius: 30px; /* Rounded corners */
-    margin-left: 10px;
-    margin-right: 10px;
+    background-color: rgb(56 176 248);
+    border-radius: 30px;
+    margin: 30px auto 0;
     font-size: 20px;
     color: #ffffff;
-    text-align: center;
     width: 200px;
     height: 40px;
     font-family: sans-serif;
-    margin-top: 30px; /* Align to the bottom */
+    display: flex;
+    justify-content: center; /* Center text horizontally */
+    align-items: center; /* Center text vertically */
+    box-shadow: 0 4px 15px rgba(56, 176, 248, 0.3);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .sidebar-button-bottom:hover {
-    background-color: #3e597d; /* Darker green on hover */
+    background-color: rgb(36, 125, 180); /* Darker green on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(64, 163, 224, 0.4);
+}
+
+.sidebar-button-bottom:active {
+    transform: translateY(0px);
 }
 
 /* Tabs */
@@ -67,20 +77,44 @@
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+    border-bottom: 1px solid rgba(132, 165, 210, 0.2);
+    width: 90%;
 }
 
 .tab {
-    padding: 10px 20px;
-    margin: 0 10px;
-    border-radius: 10px;
+    padding: 12px 20px;
+    margin: 0 16px;
     cursor: pointer;
     font-size: 18px;
-    transition: all 0.3s ease; /* Add transition for smooth animation */
+    color: #aec8ec;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.tab::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: rgb(56, 176, 248);
+    transform: scaleX(0);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 4px 4px 0 0;
+}
+
+.tab:hover::after {
+    transform: scaleX(0.5);
 }
 
 .tab.selected {
-    border: 3px solid #176683; /* Blue underline for selected tab */
-    font-weight: bold;
+    color: rgb(56, 176, 248);
+    font-weight: 600;
+}
+
+.tab.selected::after {
+    transform: scaleX(1);
 }
 
 /* Content */
@@ -90,26 +124,36 @@
     display: flex;
     flex-direction: column;
     align-items: center; /* Center content horizontally */
+    margin-left: -15px; /* Add negative margin to move left */
+    margin-top: 10px; /* Move down slightly */
 }
 
 /* Posts */
 .post-box {
+    position: relative; /* Add this */
     border: 3px solid #c5c8ff;
     width: 500px;
-    height: 350px;
+    min-height: 100px;
+    height: fit-content;
     border-radius: 15px;
     padding: 20px;
-    margin-bottom: 80px;
-    margin-top: 40px;
+    margin: 20px 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    text-align: center; /* Center text */
     margin-left: 25px;
+    display: flex;
+    flex-direction: column;
+    background-color: #1b263488;;
 }
 
 .post-title {
-    font-size: 24px;
     font-weight: bold;
-    margin-bottom: 10px;
+    font-size: 24px; /* Increased from 18px */
+    color: #e7e9ea;
+    margin-bottom: 16px; /* Increased spacing */
+    text-align: center; /* Center aligned */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
 }
 
 .post-image {
@@ -120,14 +164,69 @@
 }
 
 .post-text {
-    font-size: 18px;
+    font-size: 18px; /* Increased from 16px */
     color: #ffffff;
+    line-height: 1.6; /* Adjusted for better readability */
+    text-align: left; /* Align text to left */
+    padding: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    width: 100%;
+    /* Remove padding-bottom since button is now at top */
 }
 
 .post-image.small {
-    width: 400px;
-    height: auto;
+    width: 100%;
+    max-width: 400px;
+    max-height: 300px;
+    object-fit: contain;
+    margin: 15px auto;
     cursor: pointer;
+    display: block;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    width: 100%;
+}
+
+.post-actions {
+    display: flex;
+    gap: 8px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+}
+
+.edit-button,
+.delete-button {
+    background-color: transparent;
+    color: #71767b;
+    border: none;
+    border-radius: 50%;
+    width: 36px; /* Increased from 32px */
+    height: 36px; /* Increased from 32px */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px; /* Increased from 16px */
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.edit-button:hover {
+    background-color: rgba(56, 176, 248, 0.1);
+    color: rgb(56, 176, 248);
+}
+
+.delete-button:hover {
+    background-color: rgba(244, 33, 46, 0.1);
+    color: #f4212e;
 }
 
 /* Modal */
@@ -137,28 +236,200 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0);
     display: flex;
     justify-content: center;
     align-items: center;
+    backdrop-filter: blur(0px);
     z-index: 1000;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.modal-overlay.active {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    opacity: 1;
+    pointer-events: all;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .modal-content {
-    background: white;
-    padding: 5px;
-    border-radius: 8px;
+    background-color: #1b2634;
+    padding: 30px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transform: translateY(30px) scale(0.95);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.modal-image {
-    max-width: 55vw;
-    max-height: 90vh;
+.modal-overlay.active .modal-content {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+.modal-content h2 {
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.modal-content input,
+.modal-content textarea,
+.modal-content select {
+    background-color: #263340;
+    color: #ffffff;
+    padding: 12px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+.modal-content textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus,
+.modal-content select:focus {
+    outline: none;
+    border-color: rgb(56, 176, 248);
+    box-shadow: 0 0 0 2px rgba(56, 176, 248, 0.2);
+}
+
+.modal-content input::placeholder,
+.modal-content textarea::placeholder {
+    color: #aec8ec;
+}
+
+.modal-content select {
+    cursor: pointer;
+}
+
+.modal-content select option {
+    background-color: #263340;
+    color: #ffffff;
+}
+
+.modal-content button[type="submit"] {
+    background-color: rgb(56, 176, 248);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 8px;
+}
+
+.modal-content button[type="submit"]:hover {
+    background-color: rgb(34, 144, 218);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.close-button {
+  background-color: transparent;
+  color: #71767b;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.close-button:hover {
+  background-color: rgba(244, 33, 46, 0.1);
+  color: #f4212e;
+}
+
+.delete-confirmation-content {
+  color: #ffffff;
+  text-align: center;
+}
+
+.delete-confirmation-content p {
+  margin-bottom: 24px;
+  font-size: 18px;
+  color: #e7e9ea;
+  line-height: 1.4;
+}
+
+.delete-confirmation-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 16px;
+}
+
+.cancel-button,
+.confirm-delete-button {
+  flex: 1;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cancel-button {
+  background-color: transparent;
+  color: #e7e9ea;
+  border: 1px solid #404e62;
+}
+
+.cancel-button:hover {
+  background-color: rgba(231, 233, 234, 0.1);
+}
+
+.confirm-delete-button {
+  background-color: #f4212e;
+  color: white;
+  border: none;
+  box-shadow: 0 4px 15px rgba(244, 33, 46, 0.2);
+}
+
+.confirm-delete-button:hover {
+  background-color: #da1d27;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(244, 33, 46, 0.3);
+}
+
+.confirm-delete-button:active {
+  transform: translateY(0);
 }
 
 /* Right Sidebar Container */
 .right-sidebar {
-    margin-top: 20px;
-    margin-right: 250px;
+    margin-top: 30px;
+    margin-right: 270px;
     width: 300px;
     padding: 0; /* Remove padding from the main container */
     display: flex;
@@ -217,6 +488,18 @@
     border: none;
     border-radius: 20px;
     cursor: pointer;
+    /* Add these properties */
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.get-verified-button:hover {
+    background-color: rgb(36, 125, 180);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(64, 163, 224, 0.4);
+}
+
+.get-verified-button:active {
+    transform: translateY(0px);
 }
 
 /* Trending Section */
@@ -292,10 +575,150 @@
 
 .follow-button {
     padding: 6px 12px;
-    background-color: rgb(56 176 248);
+    background-color: rgb(56 176, 248);
     color: white;
     font-weight: bold;
     border: none;
     border-radius: 20px;
     cursor: pointer;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(0px);
+    z-index: 1000;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.modal-overlay.active {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    opacity: 1;
+    pointer-events: all;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-content {
+    background-color: #1b2634;
+    padding: 30px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transform: translateY(30px) scale(0.95);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+.modal-content h2 {
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.modal-content input,
+.modal-content textarea,
+.modal-content select {
+    background-color: #263340;
+    color: #ffffff;
+    padding: 12px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+.modal-content textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus,
+.modal-content select:focus {
+    outline: none;
+    border-color: rgb(56, 176, 248);
+    box-shadow: 0 0 0 2px rgba(56, 176, 248, 0.2);
+}
+
+.modal-content input::placeholder,
+.modal-content textarea::placeholder {
+    color: #aec8ec;
+}
+
+.modal-content select {
+    cursor: pointer;
+}
+
+.modal-content select option {
+    background-color: #263340;
+    color: #ffffff;
+}
+
+.modal-content button[type="submit"] {
+    background-color: rgb(56, 176, 248);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 8px;
+}
+
+.modal-content button[type="submit"]:hover {
+    background-color: rgb(34, 144, 218);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.close-button {
+  background-color: transparent;
+  color: #71767b;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.close-button:hover {
+  background-color: rgba(244, 33, 46, 0.1);
+  color: #f4212e;
 }
